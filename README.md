@@ -1,15 +1,37 @@
 # Сцена
 
-Небольшой сайт на Go: главная со светом, который следует за курсором, регистрация и стена коротких заметок. Пароли и заметки лежат в локальном файле SQLite.
+Небольшой сайт на Go: главная со светом, который следует за курсором, регистрация и стена коротких заметок.
 
 ## Запуск
 
-Создать папку,назвав ее site(или как то подобно)
-в папке создать еще 3 папки,назвав data,static,templates
-в папке data сунуть (scene.db; scene.db-shm; scene.db-wal;)
-в папке static сунуть (boot.js; motion.wasm; style.css; wasm_exec.js;)
-в папке templates (auth.html; home.html; layout.html;)
-Нужен Go 1.26. Команды запускаются из этой папки:
+Нужен Go 1.22+.
+
+```bash
+git clone https://github.com/arrieshri/site.git
+cd site
+go run .
+
+## Запуск
+
+site/
+├── main.go
+├── auth.go
+├── db.go
+├── motion.go
+├── motion_js.go
+├── ... (остальные .go файлы)
+├── go.mod
+├── go.sum
+├── templates/
+│   ├── auth.html
+│   ├── home.html
+│   └── layout.html
+├── static/
+│   ├── boot.js
+│   ├── motion.wasm
+│   ├── style.css
+│   └── wasm_exec.js
+└── data/          ← эта папка должна быть в .gitignore
 
 ```
 go run .
