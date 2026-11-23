@@ -1,0 +1,97 @@
+{{define "home"}}
+{{template "head" .}}
+  <header class="stage" id="top">
+    <div class="glow" data-lag="3" data-range="0.035"></div>
+    <div class="orb orb-a" data-lag="5" data-range="0.07"><div class="drift"></div></div>
+    <div class="orb orb-b" data-lag="7" data-range="0.05"><div class="drift"></div></div>
+    <div class="orb orb-c" data-lag="9" data-range="0.09"><div class="drift"></div></div>
+
+    <div class="copy">
+      <p class="eyebrow">приветствие</p>
+      <h1>{{if .User}}Добро пожаловать, {{.User.Name}}!{{else}}Добро пожаловать!{{end}}</h1>
+      <p class="lead">Страница оформлена спокойно: свет мягко следует за курсором, а ниже можно оставить заметку.</p>
+      <a class="scroll-hint" href="#next">Листай вниз</a>
+    </div>
+  </header>
+
+  <main id="next">
+    <section class="block">
+      <p class="eyebrow">дальше</p>
+      <h2>Обычная страница, не один экран</h2>
+      <p>Первое, что видит глаз. Пролистайте вниз — там продолжение.</p>
+    </section>
+
+    <section class="block">
+      <p class="eyebrow">на сайте имеется:</p>
+      <h2>Три вещи, которые здесь уже есть</h2>
+      <div class="notes">
+        <article class="note">
+          <h3>Первое</h3>
+          <p>Частота кадров зависит от герцовки экрана: 60, 120, 144 и выше.</p>
+        </article>
+        <article class="note">
+          <h3>Второе</h3>
+          <p>Пятна на фоне чуть отстают от курсора. Так глазам спокойнее.</p>
+        </article>
+        <article class="note">
+          <h3>Третье</h3>
+          <p>На стене ниже можно оставить короткую заметку от своего имени.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="block" id="notes">
+      <p class="eyebrow">стена</p>
+      <h2>Пара слов от тех, кто зашёл</h2>
+      <p>Заметки лежат в файле базы на компьютере, где запущен сайт. Облако для этого не нужно.</p>
+
+      <div class="composer">
+        {{if .OK}}<p class="form-ok">{{.OK}}</p>{{end}}
+        {{if .Error}}<p class="form-error">{{.Error}}</p>{{end}}
+        {{if .User}}
+        <p class="guest-hint">Вы пишете как {{.User.Name}}.</p>
+        <form method="post" action="/notes">
+          <input type="hidden" name="csrf" value="{{.CSRF}}">
+          <label class="field">
+            <span>Заметка</span>
+            <textarea name="body" required maxlength="280" rows="3" placeholder="Коротко, до 280 символов"></textarea>
+          </label>
+          <button class="submit" type="submit">Оставить</button>
+        </form>
+        {{else}}
+        <p class="guest-hint">Чтобы оставить заметку, <a href="/login">войдите</a> или <a href="/register">зарегистрируйтесь</a>.</p>
+        {{end}}
+      </div>
+
+      {{if .Notes}}
+      <div class="notes wall">
+        {{range .Notes}}
+        <article class="note">
+          <h3>{{.Author}}</h3>
+          <p>{{.Body}}</p>
+          <p class="when">{{.When}}</p>
+          {{if .Mine}}
+          <form method="post" action="/notes/{{.ID}}/delete">
+            <input type="hidden" name="csrf" value="{{$.CSRF}}">
+            <button class="text-btn" type="submit">Удалить</button>
+          </form>
+          {{end}}
+        </article>
+        {{end}}
+      </div>
+      {{else}}
+      <p class="guest-hint">Пока на стене пусто.</p>
+      {{end}}
+    </section>
+
+    <section class="block block-end">
+      <p class="eyebrow">конец</p>
+      <h2>Можно вернуться наверх</h2>
+      <p>Дальше страница будет расти. А пока здесь свет, кадры и стена.</p>
+      <a class="scroll-hint" href="#top">Наверх</a>
+    </section>
+  </main>
+
+  <p class="hud"><span id="fps">—</span><span class="hud-unit">кадр/с</span></p>
+{{template "foot" .}}
+{{end}}

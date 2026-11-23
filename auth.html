@@ -1,0 +1,105 @@
+{{define "register"}}
+{{template "head" .}}
+<div class="stage sheet">
+  <div class="glow" data-lag="3" data-range="0.03"></div>
+  <div class="orb orb-a" data-lag="5" data-range="0.05"><div class="drift"></div></div>
+  <main class="card">
+    <p class="eyebrow">аккаунт</p>
+    <h1>Регистрация</h1>
+    <p class="lead">Имя, почта и пароль сохраняются в файле на этом компьютере. Подписка не нужна.</p>
+    <form method="post" action="/register">
+      <input type="hidden" name="csrf" value="{{.CSRF}}">
+      <label class="field">
+        <span>Имя</span>
+        <input name="name" required maxlength="40" autocomplete="nickname" value="{{.Name}}">
+      </label>
+      <label class="field">
+        <span>Почта</span>
+        <input name="email" type="email" required maxlength="254" autocomplete="email" inputmode="email" value="{{.Email}}">
+      </label>
+      <label class="field">
+        <span>Пароль</span>
+        <input name="password" type="password" required minlength="8" maxlength="72" autocomplete="new-password">
+      </label>
+      <label class="field">
+        <span>Пароль ещё раз</span>
+        <input name="password2" type="password" required minlength="8" maxlength="72" autocomplete="new-password">
+      </label>
+      {{if .Error}}<p class="form-error">{{.Error}}</p>{{end}}
+      <button class="submit" type="submit">Создать аккаунт</button>
+    </form>
+    <p class="alt">Уже есть аккаунт? <a href="/login">Войти</a></p>
+  </main>
+</div>
+{{template "foot" .}}
+{{end}}
+
+{{define "login"}}
+{{template "head" .}}
+<div class="stage sheet">
+  <div class="glow" data-lag="3" data-range="0.03"></div>
+  <div class="orb orb-b" data-lag="6" data-range="0.05"><div class="drift"></div></div>
+  <main class="card">
+    <p class="eyebrow">аккаунт</p>
+    <h1>Вход</h1>
+    <p class="lead">Тот же файл базы, что и при регистрации.</p>
+    <form method="post" action="/login">
+      <input type="hidden" name="csrf" value="{{.CSRF}}">
+      <label class="field">
+        <span>Почта</span>
+        <input name="email" type="email" required maxlength="254" autocomplete="email" inputmode="email" value="{{.Email}}">
+      </label>
+      <label class="field">
+        <span>Пароль</span>
+        <input name="password" type="password" required maxlength="72" autocomplete="current-password">
+      </label>
+      {{if .Error}}<p class="form-error">{{.Error}}</p>{{end}}
+      <button class="submit" type="submit">Войти</button>
+    </form>
+    <p class="alt">Нет аккаунта? <a href="/register">Регистрация</a></p>
+  </main>
+</div>
+{{template "foot" .}}
+{{end}}
+
+{{define "account"}}
+{{template "head" .}}
+<div class="stage sheet">
+  <div class="glow" data-lag="3" data-range="0.03"></div>
+  <main class="card">
+    <p class="eyebrow">аккаунт</p>
+    <h1>{{.User.Name}}</h1>
+    <p class="meta">{{.User.Email}}<br>на сайте с {{.User.Since}}</p>
+    {{if .OK}}<p class="form-ok">{{.OK}}</p>{{end}}
+    {{if .Error}}<p class="form-error">{{.Error}}</p>{{end}}
+
+    <form method="post" action="/account/name">
+      <input type="hidden" name="csrf" value="{{.CSRF}}">
+      <label class="field">
+        <span>Имя на стене</span>
+        <input name="name" required maxlength="40" autocomplete="nickname" value="{{.User.Name}}">
+      </label>
+      <button class="submit" type="submit">Сохранить имя</button>
+    </form>
+
+    <form method="post" action="/account/password">
+      <input type="hidden" name="csrf" value="{{.CSRF}}">
+      <label class="field">
+        <span>Текущий пароль</span>
+        <input name="current" type="password" required autocomplete="current-password">
+      </label>
+      <label class="field">
+        <span>Новый пароль</span>
+        <input name="password" type="password" required minlength="8" maxlength="72" autocomplete="new-password">
+      </label>
+      <label class="field">
+        <span>Новый пароль ещё раз</span>
+        <input name="password2" type="password" required minlength="8" maxlength="72" autocomplete="new-password">
+      </label>
+      <button class="submit" type="submit">Сменить пароль</button>
+    </form>
+    <p class="alt"><a href="/#notes">К стене</a></p>
+  </main>
+</div>
+{{template "foot" .}}
+{{end}}
