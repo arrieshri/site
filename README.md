@@ -4,6 +4,11 @@
 
 ## Запуск
 
+Создать папку,назвав ее site(или как то подобно)
+в папке создать еще 3 папки,назвав data,static,templates
+в папке data сунуть (scene.d; scene.db-shm; scene.db-wal;)
+в папке static сунуть (boot.js; motion.wasm; style.css; wasm_exec.js;)
+в папке templates (auth.html; home.html; layout.html;)
 Нужен Go 1.26. Команды запускаются из этой папки:
 
 ```
